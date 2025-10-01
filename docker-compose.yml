@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  bot:
+    build: .
+    container_name: massage_bot
+    env_file:
+      - .env
+    volumes:
+      # Картинки доступны в контейнере даже при пересборках/перезапусках
+      - ./images:/app/images:ro
+      # Именованный volume для потенциальных временных данных/логов
+      - runtime_data:/app/runtime
+    restart: unless-stopped
+
+volumes:
+  runtime_data:
