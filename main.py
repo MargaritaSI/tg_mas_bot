@@ -113,7 +113,7 @@ SLOT_END = 19    # 19:00
 # -----------------------------------------------------------------------------
 TEXT: Dict[str, Dict[str, str]] = {
     "ru": {
-        "greet_both": "🌟 Привет! Я помогу подобрать и забронировать массаж. / Hello! I will help you to select and book a massage.\n\nРусский — нажмите 🇷🇺\nEnglish — нажмите 🇬🇧",
+        "greet_both": "🌟 Привет! Я помогу подобрать и забронировать массаж. / Hello! I will help you to select and book a massage.\n\nРусский — 🇷🇺\nEnglish — 🇬🇧",
         "greet_caption": "🌟 Тут по шагам ты сможешь выбрать массаж, время, дату и оформить бронь.\n\nВыберите подходящий вид массажа:",
         "choose_service": "Выберите вид массажа:",
         "duration_prompt": "⏰ Подтверди длительность сеанса:",
@@ -126,7 +126,7 @@ TEXT: Dict[str, Dict[str, str]] = {
         "choose_contact": "📞 Укажите контакт для связи (можно использовать @username или номер +...):",
         "use_username": "Использовать Telegram @{username}",
         "enter_contact": "Ввести контакт вручную",
-        "booking_saved": "✅ Спасибо! Заявка отправлена. Администратор проверит и свяжется по оставленному контакту.\n Узанть больше про практики можно тут: https://body-mind-harmony-guide.lovable.app/ и канал @itsmartmassage",
+        "booking_saved": "✅   https://body-mind-harmony-guide.lovable.app/ и канал @itsmartmassage",
         "booking_confirmed": "✅ Ваш массаж забронирован, с вами свяжется специалист.",
         "updated": "✅ Обновлено",
         "no_bookings": "📝 У вас пока нет заявок.",
@@ -138,7 +138,7 @@ TEXT: Dict[str, Dict[str, str]] = {
     },
     "en": {
         "greet_both": "🌟 Hello! / Привет!\n\nEnglish — press 🇬🇧\nРусский — press 🇷🇺",
-        "greet_caption": "🌟 Hi — I can help you pick and book a massage.\n\nChoose a massage type:",
+        "greet_caption": "🌟 Here you can step-by-step select a massage, time, date, and make a reservation. \n\nChoose a massage type:",
         "choose_service": "Choose a massage type:",
         "duration_prompt": "⏰ Choose duration:",
         "calendar_prompt": "📅 Choose date (14 days):",
@@ -323,7 +323,11 @@ async def cmd_info(message: Message, state: FSMContext):
         "оставив контакт для связи.\n\n"
         "Специалист ответит по выбранному виду связи для подтверждения выезда.\n"
         "Чтобы начать бронирование, нажмите /start.\n\n"
-        "Больше: https://body-mind-harmony-guide.lovable.app/ и канал @itsmartmassage"
+        "Больше website: https://body-mind-harmony-guide.lovable.app/ и telegram @itsmartmassage"
+        "Here you can quickly select the desired massage type, then book the date and time, "
+        "leaving your contact information.\n\n "
+        "A specialist will contact you via the selected contact method to confirm your appointment.\n\n "
+        "To begin booking, click /start. \n\n"
     )
 
 @dp.message(F.text == "/menu")
@@ -366,7 +370,7 @@ async def on_service_selected(call: CallbackQuery, state: FSMContext):
     caption = (
         f"{svc_title(key, lang)}\n\n"
         f"{svc_desc(key, lang)}\n\n"
-        f"⏰ 60 {TEXT[lang]['minutes']} по умолчанию\n"
+        f"⏰ 60 {TEXT[lang]['minutes']} \n"
         f"💰 €{svc['base_price_60']}"
     )
     # сохраняем выбор услуги
