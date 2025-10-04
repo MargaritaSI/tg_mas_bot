@@ -128,6 +128,7 @@ TEXT: Dict[str, Dict[str, str]] = {
         "enter_contact": "Ввести контакт вручную",
         "booking_saved": "✅   https://body-mind-harmony-guide.lovable.app/ и канал @itsmartmassage",
         "booking_confirmed": "✅ Ваш массаж забронирован, с вами свяжется специалист.",
+        "booking_final_message": "Для нового бронирования выберите опцию из меню слева",
         "updated": "✅ Обновлено",
         "no_bookings": "📝 У вас пока нет заявок.",
         "my_bookings_title": "📋 Ваши заявки:",
@@ -152,6 +153,7 @@ TEXT: Dict[str, Dict[str, str]] = {
         "enter_contact": "Enter contact manually",
         "booking_saved": "✅ Booking saved. Await confirmation.",
         "booking_confirmed": "✅ Thank you, your massage is booked, the specialist will contact you. \n You could learn more about practice: https://body-mind-harmony-guide.lovable.app/",
+        "booking_final_message": "For new booking please select an option from the left menu",
         "updated": "✅ Updated",
         "no_bookings": "📝 You have no bookings yet.",
         "my_bookings_title": "📋 Your bookings:",
@@ -590,13 +592,14 @@ async def use_contact_cb(call: CallbackQuery, state: FSMContext):
         # показать картинку подтверждения, если есть
         if os.path.exists(CONFIRM_IMG):
             try:
-                await call.message.answer_photo(photo=FSInputFile(CONFIRM_IMG), caption=TEXT[lang]["booking_confirmed"], reply_markup=service_list_kb(lang))
+                await call.message.answer_photo(photo=FSInputFile(CONFIRM_IMG), caption=TEXT[lang]["booking_confirmed"])
             except Exception:
                 logger.exception("Failed sending confirmation image")
-                await call.message.answer(TEXT[lang]["booking_confirmed"], reply_markup=service_list_kb(lang))
+                await call.message.answer(TEXT[lang]["booking_confirmed"])
         else:
-            await call.message.answer(TEXT[lang]["booking_confirmed"], reply_markup=service_list_kb(lang))
+            await call.message.answer(TEXT[lang]["booking_confirmed"])
         await call.message.answer(TEXT[lang]["booking_saved"])
+        await call.message.answer(TEXT[lang]["booking_final_message"])
         # очистка корзины
         await state.update_data(cart=[])
     else:
@@ -634,6 +637,7 @@ async def entering_contact_message(message: Message, state: FSMContext):
             else:
                 await message.answer(TEXT[lang]["booking_confirmed"])
             await message.answer(TEXT[lang]["booking_saved"])
+            await message.answer(TEXT[lang]["booking_final_message"])
             await state.update_data(cart=[])
         except Exception:
             logger.exception("Error processing cart checkout (manual contact)")
@@ -666,13 +670,14 @@ async def entering_contact_message(message: Message, state: FSMContext):
         # подтверждение пользователю
         if os.path.exists(CONFIRM_IMG):
             try:
-                await message.answer_photo(photo=FSInputFile(CONFIRM_IMG), caption=TEXT[lang]["booking_confirmed"], reply_markup=service_list_kb(lang))
+                await message.answer_photo(photo=FSInputFile(CONFIRM_IMG), caption=TEXT[lang]["booking_confirmed"])
             except Exception:
                 logger.exception("Failed to send confirmation image (single manual contact)")
-                await message.answer(TEXT[lang]["booking_confirmed"], reply_markup=service_list_kb(lang))
+                await message.answer(TEXT[lang]["booking_confirmed"])
         else:
-            await message.answer(TEXT[lang]["booking_confirmed"], reply_markup=service_list_kb(lang))
+            await message.answer(TEXT[lang]["booking_confirmed"])
         await message.answer(TEXT[lang]["booking_saved"])
+        await message.answer(TEXT[lang]["booking_final_message"])
     except Exception:
         logger.exception("Error saving single booking (manual contact)")
         await message.answer("Ошибка при отправке. Попробуйте позже.")

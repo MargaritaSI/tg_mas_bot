@@ -11,5 +11,7 @@ COPY . /app
 # Установим права на доступ к файлам (для SQLite и картинок)
 RUN chmod -R 755 /app
 
+COPY images /app/images
+
 # Команда по умолчанию для запуска бота
 CMD ["python", "main.py"]
